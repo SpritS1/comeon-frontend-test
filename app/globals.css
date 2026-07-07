@@ -1,26 +1,277 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *, :root));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-display);
+  --font-heading: var(--font-display);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-ink: var(--brand-ink);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-soft: var(--ink-soft);
+  --color-fg-dim: var(--fg-dim);
+  --color-fg-faint: var(--fg-faint);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root,
+.dark {
+  color-scheme: dark;
+
+  --background: #0c0d0b;
+  --foreground: #f9f9f9;
+
+  /* Cards in this design are light surfaces floating on the dark shell */
+  --card: #f9f9f9;
+  --card-foreground: #14160f;
+
+  --popover: #16190f;
+  --popover-foreground: #f9f9f9;
+
+  --primary: #8eb50d;
+  --primary-foreground: #101305;
+
+  --secondary: rgba(255, 255, 255, 0.05);
+  --secondary-foreground: #f9f9f9;
+
+  --muted: rgba(255, 255, 255, 0.05);
+  --muted-foreground: #9aa08f;
+
+  --accent: rgba(255, 255, 255, 0.06);
+  --accent-foreground: #f9f9f9;
+
+  --destructive: #c8321f;
+  --destructive-foreground: #f9f9f9;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #8eb50d;
+
+  --radius: 0.75rem;
+
+  /* Brand tokens */
+  --brand: #8eb50d;
+  --brand-strong: #a6d411;
+  --brand-ink: #101305;
+  --surface: #f9f9f9;
+  --ink: #14160f;
+  --ink-muted: #6b7062;
+  --ink-soft: #5e6356;
+  --fg-dim: #9aa08f;
+  --fg-faint: #8b9080;
+}
+
+@keyframes screenIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.994);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes shake {
+  10%,
+  90% {
+    transform: translateX(-2px);
+  }
+  20%,
+  80% {
+    transform: translateX(4px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-8px);
+  }
+  40%,
+  60% {
+    transform: translateX(8px);
+  }
+}
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes sheen {
+  0% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  55%,
+  100% {
+    transform: translateX(130%) skewX(-18deg);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .anim-screen-in {
+    animation: screenIn 0.45s ease both;
+  }
+  .anim-glow {
+    animation: glowPulse 6s ease-in-out infinite;
+  }
+  .anim-shake {
+    animation: shake 0.5s ease;
+  }
+  .anim-loading-dot {
+    animation: glowPulse 1.6s ease-in-out infinite;
+  }
+
+  .anim-card-in {
+    animation: cardIn 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 50ms);
+  }
+  .anim-float {
+    animation: floatY 6s ease-in-out infinite;
+  }
+
+  .anim-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .anim-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.07),
+      transparent
+    );
+    animation: shimmer 1.8s ease infinite;
+  }
+
+  .cta-sheen {
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-130%) skewX(-18deg);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.38),
+      transparent
+    );
+    animation: sheen 3.4s ease-in-out 1.2s infinite;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-screen-in,
+  .anim-card-in,
+  .anim-glow,
+  .anim-shake,
+  .anim-float,
+  .anim-loading-dot,
+  .anim-shimmer::after,
+  .cta-sheen::after {
+    animation: none;
+  }
+}
+
+#game-launch {
+  width: 100%;
+  height: 100%;
+}
+#game-launch iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: 0;
+  display: block;
+  border-radius: 14px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }
